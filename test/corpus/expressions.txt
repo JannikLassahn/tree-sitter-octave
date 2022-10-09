@@ -1,0 +1,118 @@
+=========
+Calls
+=========
+
+a()
+b(1)
+c(d)
+d(e, f)
+
+---------
+
+(source_file
+  (expression_statement
+    (call_expression 
+      function: (identifier)
+      arguments: (argument_list)))
+  (expression_statement
+    (call_expression
+      function: (identifier)
+      arguments: (argument_list (integer))))
+  (expression_statement
+    (call_expression
+      function: (identifier)
+      arguments: (argument_list (identifier))))
+  (expression_statement
+    (call_expression
+      function: (identifier)
+      arguments: (argument_list
+        (identifier)
+        (identifier)))))
+
+=========
+Binary
+=========
+
+1.0+1.0
+1.0-1.0
+1.0*1.0
+1.0/1.0
+
+---------
+
+(source_file
+  (expression_statement
+    (binary_expression 
+      left: (float)    
+      right: (float))) 
+  (expression_statement
+    (binary_expression 
+      left: (float)    
+      right: (float))) 
+  (expression_statement
+    (binary_expression 
+      left: (float)
+      right: (float)))
+  (expression_statement
+    (binary_expression
+      left: (float)
+      right: (float))))
+
+=========
+Comparison
+=========
+
+1 < 2 <= 3 == 3 >= 2 > 1
+
+---------
+
+(source_file
+  (expression_statement
+    (comparison_operator
+      (integer)
+      (integer)
+      (integer)
+      (integer)
+      (integer)
+      (integer))))
+
+=========
+Assignments
+=========
+
+a = 1
+b = c;
+
+---------
+
+(source_file
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (assignment
+      left: (identifier)
+      right: (identifier))))
+
+=========
+Augmented assignments
+=========
+
+a += 1
+b++
+--c
+
+---------
+
+(source_file
+  (expression_statement
+    (augmented_assignment
+      left: (identifier)
+      right: (integer)))
+  (expression_statement
+    (update_expression
+      argument: (identifier)))
+  (expression_statement
+    (update_expression
+      argument: (identifier))))

@@ -1,0 +1,24 @@
+{
+  "name": "tree-sitter-octave",
+  "version": "0.1.0",
+  "description": "Octave grammar for tree-sitter",
+  "main": "bindings/node",
+  "scripts": {
+    "build": "tree-sitter generate",
+    "test": "tree-sitter test",
+    "parse": "tree-sitter parse"
+  },
+  "author": "Jannik Lassahn",
+  "license": "MIT",
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.7"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.octave",
+      "file-types": [
+        "m"
+      ]
+    }
+  ]
+}

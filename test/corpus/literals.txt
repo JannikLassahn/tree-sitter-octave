@@ -1,0 +1,61 @@
+=========
+Integers
+=========
+
+1
+-1
+
+------
+
+(source_file
+  (expression_statement (integer))
+  (expression_statement 
+    (unary_expression argument: (integer))))
+
+=========
+Floats
+=========
+
+1.0
+-1.0
+2.01e+10
+2.01e-10
+
+---------
+
+(source_file
+  (expression_statement (float))
+  (expression_statement 
+    (unary_expression argument: (float)))
+  (expression_statement (float))
+  (expression_statement (float)))
+
+=========
+Strings
+=========
+
+'hello'
+'hello ''world''!'
+
+---------
+
+(source_file
+  (expression_statement
+    (string))
+  (expression_statement
+    (string
+      (escape_sequence)
+      (escape_sequence))))
+
+=========
+Booleans
+=========
+
+true
+false
+
+---------
+
+(source_file
+  (expression_statement (true))
+  (expression_statement (false)))
