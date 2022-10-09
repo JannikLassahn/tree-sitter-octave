@@ -82,17 +82,24 @@ Assignments
 
 a = 1
 b = c;
+[a,b] = c;
 
 ---------
 
 (source_file
-  (expression_statement
+  (expression_statement 
     (assignment
       left: (identifier)
       right: (integer)))
-  (expression_statement
+  (expression_statement 
     (assignment
       left: (identifier)
+      right: (identifier)))
+  (expression_statement
+    (assignment
+      left: (matrix_pattern
+        (identifier)
+        (identifier))
       right: (identifier))))
 
 =========
@@ -116,3 +123,56 @@ b++
   (expression_statement
     (update_expression
       argument: (identifier))))
+
+=========
+Member expression
+=========
+
+a.b.c = 1
+
+---------
+
+(source_file
+  (expression_statement
+    (assignment
+      left: (member_expression
+        element: (member_expression
+          element: (identifier)
+          field: (identifier))
+        field: (identifier))
+      right: (integer))))
+
+
+=========
+Matrix expression
+=========
+
+[1 3 3; 4 5 6]
+
+---------
+
+(source_file
+  (expression_statement
+    (matrix
+      (integer)
+      (integer)
+      (integer)
+      (integer)
+      (integer)
+      (integer))))
+
+=========
+Cell expression
+=========
+
+{ 'a'; 1,2,3 }
+
+---------
+
+(source_file
+  (expression_statement
+    (cell
+      (string)
+      (integer)
+      (integer)
+      (integer))))

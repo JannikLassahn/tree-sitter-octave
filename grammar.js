@@ -11,8 +11,10 @@ const PREC = {
   unary: 9,
   power: 10,
   transpose: 11,
-  parentheses: 12,
+  plusplus: 12,
+  parentheses: 13,
   call: 20,
+  dot: 21,
 };
 
 module.exports = grammar({
@@ -30,7 +32,13 @@ module.exports = grammar({
 
   word: ($) => $.identifier,
 
-  conflicts: ($) => [[$.primary_expression, $.pattern]],
+  conflicts: ($) => [
+    [$.primary_expression, $.pattern],
+    [$.primary_expression, $.matrix_pattern],
+    [$.matrix, $.matrix_pattern],
+  ],
+
+  inline: ($) => [$._left_hand_side],
 
   rules: {
     source_file: ($) => repeat($._statement),
@@ -127,13 +135,13 @@ module.exports = grammar({
     primary_expression: ($) =>
       choice(
         $.identifier,
-        $.string,
-        $.integer,
-        $.float,
-        $.true,
-        $.false,
+        $._literal,
+        $.matrix,
+        $.cell,
         $.call_expression,
-        $.parenthesized_expression
+        $.parenthesized_expression,
+        $.elementaccess_expression,
+        $.member_expression
       ),
 
     binary_expression: ($) => {
@@ -171,6 +179,7 @@ module.exports = grammar({
 
     update_expression: ($) =>
       prec.left(
+        PREC.plusplus,
         choice(
           seq(
             field("argument", $.expression),
@@ -211,16 +220,10 @@ module.exports = grammar({
         field("right", $._right_hand_side)
       ),
 
-    _left_hand_side: ($) => choice($.pattern, $.pattern_list),
+    _left_hand_side: ($) => choice($.pattern),
     _right_hand_side: ($) => choice($.expression),
 
-    pattern: ($) => choice($.identifier, $.matrix_pattern),
-    pattern_list: ($) =>
-      seq(
-        $.pattern,
-        choice(",", seq(repeat1(seq(",", $.pattern)), optional(",")))
-      ),
-
+    pattern: ($) => choice($.identifier, $.matrix_pattern, $.member_expression),
     matrix_pattern: ($) => seq("[", commaSep1($.identifier), "]"),
 
     call_expression: ($) =>
@@ -235,9 +238,36 @@ module.exports = grammar({
     parenthesized_expression: ($) =>
       prec(PREC.parentheses, seq("(", $.expression, ")")),
 
+    elementaccess_expression: ($) =>
+      prec.left(
+        PREC.parentheses,
+        seq(
+          field("element", $.primary_expression),
+          "{",
+          field("index", $.expression),
+          "}"
+        )
+      ),
+
+    member_expression: ($) =>
+      prec(
+        PREC.dot,
+        seq(
+          field("element", $.primary_expression),
+          ".",
+          field("field", $.identifier)
+        )
+      ),
+
+    matrix: ($) => seq("[", repeat(seq($.expression, optional(";"))), "]"),
+    cell: ($) =>
+      seq("{", repeat(seq($.expression, optional(choice(",", ";")))), "}"),
+
     //
     // literals
     //
+
+    _literal: ($) => choice($.string, $.true, $.false, $.integer, $.float),
 
     string: ($) =>
       choice(
