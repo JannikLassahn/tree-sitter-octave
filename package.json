@@ -10,6 +10,9 @@
   },
   "author": "Jannik Lassahn",
   "license": "MIT",
+  "dependencies": {
+    "nan": "^2.16.0"
+  },
   "devDependencies": {
     "tree-sitter-cli": "^0.20.7"
   },
