@@ -29,6 +29,7 @@ endfunction
     parameters: (parameters)
     (assignment
       left: (identifier)
+      (operator)
       right: (integer))))
 
 =========
@@ -156,9 +157,10 @@ end
 
 (source_file
   (while_statement
-    condition: (comparison_operator
-      (identifier)
-      (integer))
+    condition: (binary_expression
+          left: (identifier)
+          (operator)
+          right: (integer))
     (identifier)
     (continue_statement)
     (break_statement)))
@@ -176,12 +178,14 @@ until i < 1
 
 (source_file
   (do_statement
-    (update_expression
-      argument: (identifier))       
-    condition: (comparison_operator
+    (unary_expression
       (identifier)
-      (integer))))
-
+      (operator))
+    condition: (binary_expression
+      left: (identifier)
+      (operator)
+      right: (integer))))
+      
 =========
 Try catch statement
 =========

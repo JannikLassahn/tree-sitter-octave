@@ -10,7 +10,8 @@ Integers
 (source_file
   (integer)
   (unary_expression
-    argument: (integer)))
+    (operator)
+    (integer)))
 
 =========
 Floats
@@ -26,7 +27,8 @@ Floats
 (source_file
   (float)
   (unary_expression
-    argument: (float))
+    (operator)
+    (float))
   (float)
   (float))
 

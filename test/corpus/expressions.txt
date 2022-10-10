@@ -41,15 +41,19 @@ Binary
 (source_file
   (binary_expression
     left: (float)
+    (operator)
     right: (float))
   (binary_expression
     left: (float)
+    (operator)
     right: (float))
   (binary_expression
     left: (float)
+    (operator)
     right: (float))
   (binary_expression
     left: (float)
+    (operator)
     right: (float)))
 
 =========
@@ -61,20 +65,29 @@ Comparison
 ---------
 
 (source_file
-  (comparison_operator
-    (integer)
-    (integer)
-    (integer)
-    (integer)
-    (integer)
-    (integer)))
+  (binary_expression
+    left: (binary_expression
+      left: (binary_expression
+        left: (binary_expression
+          left: (binary_expression
+            left: (integer)
+            (operator)
+            right: (integer))
+          (operator)
+          right: (integer))
+        (operator)
+        right: (integer))
+      (operator)
+      right: (integer))
+    (operator)
+    right: (integer)))
 
 =========
 Assignments
 =========
 
 a = 1
-b = c;
+b += c;
 [a,b] = c;
 
 ---------
@@ -82,34 +95,45 @@ b = c;
 (source_file
   (assignment
     left: (identifier)
+    (operator)
     right: (integer))
   (assignment
     left: (identifier)
+    (operator)
     right: (identifier))
   (assignment
     left: (matrix_pattern
       (identifier)
       (identifier))
+    (operator)
     right: (identifier)))
 
 =========
-Augmented assignments
+Unary
 =========
 
-a += 1
-b++
---c
+a++
+a'
+--b
+!b
 
 ---------
 
 (source_file
-  (augmented_assignment
-    left: (identifier)
-    right: (integer))
-  (update_expression
-    argument: (identifier))
-  (update_expression
-    argument: (identifier)))
+  (unary_expression
+    (identifier)
+    (operator))
+  (unary_expression
+    (identifier)
+    (operator))
+  (unary_expression
+    (operator)
+    (unary_expression
+      (operator)
+      (identifier)))
+  (unary_expression
+    (operator)
+    (identifier)))
 
 =========
 Member expression
@@ -126,6 +150,7 @@ a.b.c = 1
         element: (identifier)
         field: (identifier))
       field: (identifier))
+    (operator)
     right: (integer)))
 
 =========

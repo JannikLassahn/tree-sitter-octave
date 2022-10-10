@@ -1,29 +1,5 @@
 [
   {
-    "type": "_compound_statement",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "if_statement",
-        "named": true
-      }
-    ]
-  },
-  {
-    "type": "declaration",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "function_declaration",
-        "named": true
-      },
-      {
-        "type": "global_declaration",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "expression",
     "named": true,
     "subtypes": [
@@ -32,19 +8,11 @@
         "named": true
       },
       {
-        "type": "comparison_operator",
-        "named": true
-      },
-      {
         "type": "primary_expression",
         "named": true
       },
       {
         "type": "unary_expression",
-        "named": true
-      },
-      {
-        "type": "update_expression",
         "named": true
       }
     ]
@@ -60,6 +28,10 @@
       {
         "type": "matrix_pattern",
         "named": true
+      },
+      {
+        "type": "member_expression",
+        "named": true
       }
     ]
   },
@@ -69,6 +41,18 @@
     "subtypes": [
       {
         "type": "call_expression",
+        "named": true
+      },
+      {
+        "type": "cell",
+        "named": true
+      },
+      {
+        "type": "char",
+        "named": true
+      },
+      {
+        "type": "elementaccess_expression",
         "named": true
       },
       {
@@ -85,6 +69,14 @@
       },
       {
         "type": "integer",
+        "named": true
+      },
+      {
+        "type": "matrix",
+        "named": true
+      },
+      {
+        "type": "member_expression",
         "named": true
       },
       {
@@ -127,10 +119,6 @@
           {
             "type": "pattern",
             "named": true
-          },
-          {
-            "type": "pattern_list",
-            "named": true
           }
         ]
       },
@@ -144,58 +132,16 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "augmented_assignment",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "pattern",
-            "named": true
-          },
-          {
-            "type": "pattern_list",
-            "named": true
-          }
-        ]
-      },
-      "operator": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "*=",
-            "named": false
-          },
-          {
-            "type": "+=",
-            "named": false
-          },
-          {
-            "type": "-=",
-            "named": false
-          },
-          {
-            "type": "/=",
-            "named": false
-          }
-        ]
-      },
-      "right": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "operator",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -207,38 +153,8 @@
         "required": true,
         "types": [
           {
-            "type": "primary_expression",
+            "type": "expression",
             "named": true
-          }
-        ]
-      },
-      "operator": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "&",
-            "named": false
-          },
-          {
-            "type": "*",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "/",
-            "named": false
-          },
-          {
-            "type": "|",
-            "named": false
           }
         ]
       },
@@ -247,35 +163,18 @@
         "required": true,
         "types": [
           {
-            "type": "primary_expression",
+            "type": "expression",
             "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "block",
-    "named": true,
-    "fields": {},
+    },
     "children": {
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "types": [
         {
-          "type": "_compound_statement",
-          "named": true
-        },
-        {
-          "type": "declaration",
-          "named": true
-        },
-        {
-          "type": "expression_statement",
-          "named": true
-        },
-        {
-          "type": "return_statement",
+          "type": "operator",
           "named": true
         }
       ]
@@ -308,86 +207,263 @@
     }
   },
   {
-    "type": "comment",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "comparison_operator",
+    "type": "catch_clause",
     "named": true,
     "fields": {
-      "operators": {
-        "multiple": true,
-        "required": true,
+      "exception": {
+        "multiple": false,
+        "required": false,
         "types": [
           {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
+            "type": "identifier",
+            "named": true
           }
         ]
       }
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "primary_expression",
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "else_clause",
+    "type": "cell",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "char",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "do_statement",
     "named": true,
     "fields": {
-      "consequence": {
-        "multiple": true,
-        "required": false,
+      "condition": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
-            "type": "\n",
-            "named": false
-          },
-          {
-            "type": ";",
-            "named": false
-          },
-          {
-            "type": "_compound_statement",
-            "named": true
-          },
-          {
-            "type": "declaration",
-            "named": true
-          },
-          {
-            "type": "expression_statement",
-            "named": true
-          },
-          {
-            "type": "return_statement",
+            "type": "expression",
             "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "elementaccess_expression",
+    "named": true,
+    "fields": {
+      "element": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "primary_expression",
+            "named": true
+          }
+        ]
+      },
+      "index": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "else_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -403,45 +479,84 @@
             "named": true
           }
         ]
-      },
-      "consequence": {
-        "multiple": true,
-        "required": false,
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "for_statement",
+    "named": true,
+    "fields": {
+      "value": {
+        "multiple": false,
+        "required": true,
         "types": [
           {
-            "type": "\n",
-            "named": false
-          },
-          {
-            "type": ";",
-            "named": false
-          },
-          {
-            "type": "_compound_statement",
+            "type": "identifier",
             "named": true
           },
           {
-            "type": "declaration",
-            "named": true
-          },
-          {
-            "type": "expression_statement",
-            "named": true
-          },
-          {
-            "type": "return_statement",
+            "type": "matrix_pattern",
             "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "expression_statement",
-    "named": true,
-    "fields": {},
+    },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -449,11 +564,47 @@
           "named": true
         },
         {
-          "type": "augmented_assignment",
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
           "named": true
         },
         {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
@@ -463,16 +614,6 @@
     "type": "function_declaration",
     "named": true,
     "fields": {
-      "body": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "block",
-            "named": true
-          }
-        ]
-      },
       "name": {
         "multiple": false,
         "required": true,
@@ -495,11 +636,59 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
           "type": "function_return",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
@@ -507,21 +696,6 @@
   },
   {
     "type": "function_return",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "global_declaration",
     "named": true,
     "fields": {},
     "children": {
@@ -562,37 +736,76 @@
             "named": true
           }
         ]
-      },
-      "consequence": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "\n",
-            "named": false
-          },
-          {
-            "type": ";",
-            "named": false
-          },
-          {
-            "type": "_compound_statement",
-            "named": true
-          },
-          {
-            "type": "declaration",
-            "named": true
-          },
-          {
-            "type": "expression_statement",
-            "named": true
-          },
-          {
-            "type": "return_statement",
-            "named": true
-          }
-        ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "matrix",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -608,6 +821,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "member_expression",
+    "named": true,
+    "fields": {
+      "element": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "primary_expression",
+            "named": true
+          }
+        ]
+      },
+      "field": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -641,21 +880,6 @@
     }
   },
   {
-    "type": "pattern_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "pattern",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -664,19 +888,51 @@
       "required": false,
       "types": [
         {
-          "type": "_compound_statement",
+          "type": "assignment",
           "named": true
         },
         {
-          "type": "declaration",
+          "type": "break_statement",
           "named": true
         },
         {
-          "type": "expression_statement",
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
           "named": true
         },
         {
           "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
@@ -698,48 +954,29 @@
     }
   },
   {
-    "type": "unary_expression",
+    "type": "switch_body",
     "named": true,
-    "fields": {
-      "argument": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "primary_expression",
-            "named": true
-          }
-        ]
-      },
-      "operator": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "!",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "~",
-            "named": false
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "switch_case",
+          "named": true
+        },
+        {
+          "type": "switch_otherwise",
+          "named": true
+        }
+      ]
     }
   },
   {
-    "type": "update_expression",
+    "type": "switch_case",
     "named": true,
     "fields": {
-      "argument": {
+      "value": {
         "multiple": false,
         "required": true,
         "types": [
@@ -748,21 +985,298 @@
             "named": true
           }
         ]
-      },
-      "operator": {
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "switch_otherwise",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "switch_statement",
+    "named": true,
+    "fields": {
+      "body": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "++",
-            "named": false
-          },
+            "type": "switch_body",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
           {
-            "type": "--",
-            "named": false
+            "type": "expression",
+            "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "try_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "catch_clause",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "unary_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "while_statement",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "break_statement",
+          "named": true
+        },
+        {
+          "type": "continue_statement",
+          "named": true
+        },
+        {
+          "type": "do_statement",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_statement",
+          "named": true
+        },
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "return_statement",
+          "named": true
+        },
+        {
+          "type": "switch_statement",
+          "named": true
+        },
+        {
+          "type": "try_statement",
+          "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -770,11 +1284,7 @@
     "named": false
   },
   {
-    "type": "!",
-    "named": false
-  },
-  {
-    "type": "&",
+    "type": "\"",
     "named": false
   },
   {
@@ -790,47 +1300,11 @@
     "named": false
   },
   {
-    "type": "*",
-    "named": false
-  },
-  {
-    "type": "*=",
-    "named": false
-  },
-  {
-    "type": "+",
-    "named": false
-  },
-  {
-    "type": "++",
-    "named": false
-  },
-  {
-    "type": "+=",
-    "named": false
-  },
-  {
     "type": ",",
     "named": false
   },
   {
-    "type": "-",
-    "named": false
-  },
-  {
-    "type": "--",
-    "named": false
-  },
-  {
-    "type": "-=",
-    "named": false
-  },
-  {
-    "type": "/",
-    "named": false
-  },
-  {
-    "type": "/=",
+    "type": ".",
     "named": false
   },
   {
@@ -838,27 +1312,7 @@
     "named": false
   },
   {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": "<=",
-    "named": false
-  },
-  {
     "type": "=",
-    "named": false
-  },
-  {
-    "type": "==",
-    "named": false
-  },
-  {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
     "named": false
   },
   {
@@ -867,6 +1321,26 @@
   },
   {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "break_statement",
+    "named": true
+  },
+  {
+    "type": "case",
+    "named": false
+  },
+  {
+    "type": "catch",
+    "named": false
+  },
+  {
+    "type": "continue_statement",
+    "named": true
+  },
+  {
+    "type": "do",
     "named": false
   },
   {
@@ -882,11 +1356,27 @@
     "named": false
   },
   {
+    "type": "end_try_catch",
+    "named": false
+  },
+  {
+    "type": "endfor",
+    "named": false
+  },
+  {
     "type": "endfunction",
     "named": false
   },
   {
     "type": "endif",
+    "named": false
+  },
+  {
+    "type": "endswitch",
+    "named": false
+  },
+  {
+    "type": "endwhile",
     "named": false
   },
   {
@@ -902,11 +1392,11 @@
     "named": true
   },
   {
-    "type": "function",
+    "type": "for",
     "named": false
   },
   {
-    "type": "global",
+    "type": "function",
     "named": false
   },
   {
@@ -922,19 +1412,43 @@
     "named": true
   },
   {
+    "type": "operator",
+    "named": true
+  },
+  {
+    "type": "otherwise",
+    "named": false
+  },
+  {
     "type": "return_statement",
     "named": true
+  },
+  {
+    "type": "switch",
+    "named": false
   },
   {
     "type": "true",
     "named": true
   },
   {
-    "type": "|",
+    "type": "try",
     "named": false
   },
   {
-    "type": "~",
+    "type": "until",
+    "named": false
+  },
+  {
+    "type": "while",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
     "named": false
   }
 ]

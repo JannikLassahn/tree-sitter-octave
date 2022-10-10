@@ -1,5 +1,6 @@
-// from https://de.mathworks.com/help/matlab/matlab_prog/operator-precedence.html
+// from https://docs.octave.org/v7.2.0/Operator-Precedence.html
 const PREC = {
+  assign: 0,
   or: 1,
   and: 2,
   elementwise_or: 3,
@@ -8,13 +9,12 @@ const PREC = {
   colon: 6,
   plus: 7,
   times: 8,
-  unary: 9,
+  prefix: 9,
   power: 10,
   transpose: 11,
-  plusplus: 12,
-  parentheses: 13,
+  postfix: 12,
   call: 20,
-  dot: 21,
+  parentheses: 21,
 };
 
 module.exports = grammar({
@@ -87,8 +87,7 @@ module.exports = grammar({
         $.while_statement,
         $.do_statement,
         $.try_statement,
-        $.assignment,
-        $.augmented_assignment
+        $.assignment
       ),
 
     break_statement: ($) => "break",
@@ -179,13 +178,7 @@ module.exports = grammar({
     // expressions
     //
     expression: ($) =>
-      choice(
-        $.binary_expression,
-        $.unary_expression,
-        $.comparison_operator,
-        $.primary_expression,
-        $.update_expression
-      ),
+      choice($.binary_expression, $.unary_expression, $.primary_expression),
 
     primary_expression: ($) =>
       choice(
@@ -199,14 +192,25 @@ module.exports = grammar({
         $.member_expression
       ),
 
+    operator: ($) =>
+      choice(
+        $._assign_operator,
+        $._comparison_operator,
+        $._plus_operator,
+        $._postfix_operator,
+        $._prefix_operator,
+        $._times_operator
+      ),
+
     binary_expression: ($) => {
       const table = [
-        [prec.left, "+", PREC.plus],
-        [prec.left, "-", PREC.plus],
-        [prec.left, "*", PREC.times],
-        [prec.left, "/", PREC.times],
-        [prec.left, "|", PREC.elementwise_or],
-        [prec.left, "&", PREC.elementwise_and],
+        [prec.left, $._comparison_operator, PREC.compare],
+        [prec.left, $._times_operator, PREC.times],
+        [prec.left, $._plus_operator, PREC.plus],
+        [prec.left, "&", PREC.elementwise_or],
+        [prec.left, "|", PREC.elementwise_and],
+        [prec.left, "&&", PREC.and],
+        [prec.left, "||", PREC.or],
       ];
 
       return choice(
@@ -214,9 +218,9 @@ module.exports = grammar({
           fn(
             precedence,
             seq(
-              field("left", $.primary_expression),
-              field("operator", operator),
-              field("right", $.primary_expression)
+              field("left", $.expression),
+              alias(operator, $.operator),
+              field("right", $.expression)
             )
           )
         )
@@ -224,55 +228,25 @@ module.exports = grammar({
     },
 
     unary_expression: ($) =>
-      prec(
-        PREC.unary,
-        seq(
-          field("operator", choice("+", "-", "~", "!")),
-          field("argument", $.primary_expression)
-        )
-      ),
-
-    update_expression: ($) =>
-      prec.left(
-        PREC.plusplus,
-        choice(
-          seq(
-            field("argument", $.expression),
-            field("operator", choice("++", "--"))
-          ),
-          seq(
-            field("operator", choice("++", "--")),
-            field("argument", $.expression)
-          )
-        )
-      ),
-
-    comparison_operator: ($) =>
-      prec.left(
-        PREC.compare,
-        seq(
-          $.primary_expression,
-          repeat1(
-            seq(
-              field("operators", choice("<", "<=", "==", ">=", ">")),
-              $.primary_expression
-            )
-          )
+      choice(
+        prec(
+          PREC.prefix,
+          seq(alias($._prefix_operator, $.operator), $.expression)
+        ),
+        prec(
+          PREC.postfix,
+          seq($.expression, alias($._postfix_operator, $.operator))
         )
       ),
 
     assignment: ($) =>
-      seq(
-        field("left", $._left_hand_side),
-        "=",
-        field("right", $._right_hand_side)
-      ),
-
-    augmented_assignment: ($) =>
-      seq(
-        field("left", $._left_hand_side),
-        field("operator", choice("+=", "-=", "*=", "/=")),
-        field("right", $._right_hand_side)
+      prec.right(
+        PREC.assign,
+        seq(
+          field("left", $._left_hand_side),
+          alias($._assign_operator, $.operator),
+          field("right", $._right_hand_side)
+        )
       ),
 
     _left_hand_side: ($) => choice($.pattern),
@@ -306,7 +280,7 @@ module.exports = grammar({
 
     member_expression: ($) =>
       prec(
-        PREC.dot,
+        PREC.call,
         seq(
           field("element", $.primary_expression),
           ".",
@@ -382,6 +356,35 @@ module.exports = grammar({
     identifier: ($) => /[a-zA-Z]+[a-zA-Z0-9_]*/,
 
     comment: ($) => seq(/%|#/, /.*/),
+
+    _assign_operator: ($) =>
+      token(
+        choice(
+          "=",
+          "+=",
+          "-=",
+          "*=",
+          "/=",
+          "\\=",
+          "^=",
+          ".*=",
+          "./=",
+          ".\\=",
+          ".^=",
+          "|=",
+          "&="
+        )
+      ),
+
+    _comparison_operator: ($) =>
+      token(choice("<", "<=", "==", "!=", "~=", ">=", ">")),
+
+    _plus_operator: ($) => token(choice("+", "-")),
+
+    _postfix_operator: ($) => token(choice("++", "--", "'")),
+    _prefix_operator: ($) => token(choice("+", "-", "~", "!")),
+
+    _times_operator: ($) => token(seq(optional("."), choice("*", "/", "\\"))),
   },
 });
 
