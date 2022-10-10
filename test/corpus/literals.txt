@@ -31,7 +31,7 @@ Floats
   (expression_statement (float)))
 
 =========
-Strings
+Char arrays
 =========
 
 'hello'
@@ -41,9 +41,32 @@ Strings
 
 (source_file
   (expression_statement
+    (char))
+  (expression_statement
+    (char
+      (escape_sequence)
+      (escape_sequence))))
+
+=========
+Char arrays
+=========
+
+"hello"
+"hello""world""!"
+"\n \777 \xFF"
+
+---------
+
+(source_file
+  (expression_statement
     (string))
   (expression_statement
     (string
+      (escape_sequence)
+      (escape_sequence)))
+  (expression_statement
+    (string
+      (escape_sequence)
       (escape_sequence)
       (escape_sequence))))
 

@@ -172,7 +172,7 @@ Cell expression
 (source_file
   (expression_statement
     (cell
-      (string)
+      (char)
       (integer)
       (integer)
       (integer))))

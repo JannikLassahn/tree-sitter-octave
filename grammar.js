@@ -267,20 +267,44 @@ module.exports = grammar({
     // literals
     //
 
-    _literal: ($) => choice($.string, $.true, $.false, $.integer, $.float),
+    _literal: ($) =>
+      choice($.string, $.char, $.true, $.false, $.integer, $.float),
 
     string: ($) =>
       choice(
         seq(
+          '"',
+          repeat(
+            choice(token.immediate(prec(1, /[^\\"\n]+/)), $.escape_sequence)
+          ),
+          '"'
+        )
+      ),
+
+    escape_sequence: ($) =>
+      token(
+        prec(
+          1,
+          choice(
+            '""',
+            seq("\\", choice(/x[a-fA-F\d]{2}/, /\d{3}/, /['"0abfnrtv\\]/))
+          )
+        )
+      ),
+
+    char: ($) =>
+      choice(
+        seq(
           "'",
           repeat(
-            choice(token.immediate(prec(1, /[^'\n]+/)), $.escape_sequence)
+            choice(
+              token.immediate(prec(1, /[^'\n]+/)),
+              alias(token(prec(1, /''/)), $.escape_sequence)
+            )
           ),
           "'"
         )
       ),
-
-    escape_sequence: ($) => token(prec(1, /''/)),
 
     true: ($) => "true",
     false: ($) => "false",
