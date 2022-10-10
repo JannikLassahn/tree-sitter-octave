@@ -2,7 +2,7 @@
 Function declarations
 =========
 
-function foo()
+function foo
 end
 
 function foo(a, b)
@@ -16,8 +16,7 @@ endfunction
 
 (source_file
   (function_declaration
-    name: (identifier)
-    parameters: (parameters))
+    name: (identifier))
   (function_declaration
     name: (identifier)
     parameters: (parameters
@@ -28,11 +27,9 @@ endfunction
       (identifier))
     name: (identifier)
     parameters: (parameters)
-    body: (block
-      (expression_statement
-        (assignment
-          left: (identifier)
-          right: (integer))))))
+    (assignment
+      left: (identifier)
+      right: (integer))))
 
 =========
 If statements
@@ -62,23 +59,157 @@ end
 (source_file
   (if_statement
     condition: (true)
-    consequence: (expression_statement
+    (identifier))
+  (if_statement
+    condition: (true)
+    (identifier)
+    alternative: (else_clause
       (identifier)))
   (if_statement
     condition: (true)
-    consequence: (expression_statement
-      (identifier))
-    alternative: (else_clause
-      consequence: (expression_statement
-        (identifier))))
-  (if_statement
-    condition: (true)
-    consequence: (expression_statement
-      (identifier))
+    (identifier)
     alternative: (elseif_clause
       condition: (false)
-      consequence: (expression_statement
-        (identifier)))
+      (identifier))
     alternative: (else_clause
-      consequence: (expression_statement
+      (identifier))))
+
+=========
+Switch statement
+=========
+
+switch a
+  case 1
+  case true
+    b
+   otherwise
+    c
+ endswitch
+
+---------
+
+(source_file
+  (switch_statement
+    value: (identifier)
+    body: (switch_body
+      (switch_case
+        value: (integer))
+      (switch_case
+        value: (true)
+        (identifier))
+      (switch_otherwise
         (identifier)))))
+
+=========
+For statement
+=========
+
+for v = [1 2 3]
+   disp(v)
+end
+
+---------
+
+(source_file
+  (for_statement
+    value: (identifier)
+    (matrix
+      (integer)
+      (integer)
+      (integer))
+    (call_expression
+      function: (identifier)
+      arguments: (argument_list
+        (identifier)))))
+
+=========
+For statement with structure
+=========
+
+for [key, value] = x
+   key
+   value
+end
+
+---------
+
+(source_file
+  (for_statement
+    value: (matrix_pattern
+      (identifier)
+      (identifier))
+    (identifier)
+    (identifier)
+    (identifier)))
+
+=========
+While statement
+=========
+
+while x > 1
+  y
+  continue;
+  break;
+end
+
+---------
+
+(source_file
+  (while_statement
+    condition: (comparison_operator
+      (identifier)
+      (integer))
+    (identifier)
+    (continue_statement)
+    (break_statement)))
+
+
+=========
+Do until statement
+=========
+
+do
+  i++
+until i < 1
+
+---------
+
+(source_file
+  (do_statement
+    (update_expression
+      argument: (identifier))       
+    condition: (comparison_operator
+      (identifier)
+      (integer))))
+
+=========
+Try catch statement
+=========
+
+try
+    a
+catch
+    log
+end
+
+try
+    a
+catch err
+    log(err)
+end_try_catch
+
+---------
+
+(source_file
+  (try_statement
+    (identifier)
+    (catch_clause
+      (identifier)))
+  (try_statement
+    (identifier)
+    (catch_clause
+      (identifier)
+      (call_expression
+        function: (identifier)
+        arguments: (argument_list
+          (identifier))))))

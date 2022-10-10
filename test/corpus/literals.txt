@@ -8,9 +8,9 @@ Integers
 ------
 
 (source_file
-  (expression_statement (integer))
-  (expression_statement 
-    (unary_expression argument: (integer))))
+  (integer)
+  (unary_expression
+    argument: (integer)))
 
 =========
 Floats
@@ -24,11 +24,11 @@ Floats
 ---------
 
 (source_file
-  (expression_statement (float))
-  (expression_statement 
-    (unary_expression argument: (float)))
-  (expression_statement (float))
-  (expression_statement (float)))
+  (float)
+  (unary_expression
+    argument: (float))
+  (float)
+  (float))
 
 =========
 Char arrays
@@ -40,12 +40,10 @@ Char arrays
 ---------
 
 (source_file
-  (expression_statement
-    (char))
-  (expression_statement
-    (char
-      (escape_sequence)
-      (escape_sequence))))
+  (char)
+  (char
+    (escape_sequence)
+    (escape_sequence)))
 
 =========
 Char arrays
@@ -58,17 +56,14 @@ Char arrays
 ---------
 
 (source_file
-  (expression_statement
-    (string))
-  (expression_statement
-    (string
-      (escape_sequence)
-      (escape_sequence)))
-  (expression_statement
-    (string
-      (escape_sequence)
-      (escape_sequence)
-      (escape_sequence))))
+  (string)
+  (string
+    (escape_sequence)
+    (escape_sequence))
+  (string
+    (escape_sequence)
+    (escape_sequence)
+    (escape_sequence)))
 
 =========
 Booleans
@@ -80,5 +75,5 @@ false
 ---------
 
 (source_file
-  (expression_statement (true))
-  (expression_statement (false)))
+  (true)
+  (false))

@@ -9,7 +9,10 @@
 
 [
   (string)
+  (char)
 ] @string
+
+(escape_sequence) @escape
 
 [
   (float)
@@ -33,7 +36,6 @@
 ] @operator
 
 [
-  "global"
   "end"
   "function"
   "endfunction"
@@ -41,4 +43,15 @@
   "elseif"
   "else"
   "endif"
+  "switch"
+  "case"
+  "otherwise"
+  "for"
+  "while"
+  "endwhile"
+  "do"
+  "until"
+  "try"
+  "catch"
+  "end_try_catch"
 ] @keyword

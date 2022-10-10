@@ -10,24 +10,22 @@ d(e, f)
 ---------
 
 (source_file
-  (expression_statement
-    (call_expression 
-      function: (identifier)
-      arguments: (argument_list)))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list (integer))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list (identifier))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (identifier)
-        (identifier)))))
+  (call_expression
+    function: (identifier)
+    arguments: (argument_list))
+  (call_expression
+    function: (identifier)
+    arguments: (argument_list
+      (integer)))
+  (call_expression
+    function: (identifier)
+    arguments: (argument_list
+      (identifier)))
+  (call_expression
+    function: (identifier)
+    arguments: (argument_list
+      (identifier)
+      (identifier))))
 
 =========
 Binary
@@ -41,22 +39,18 @@ Binary
 ---------
 
 (source_file
-  (expression_statement
-    (binary_expression 
-      left: (float)    
-      right: (float))) 
-  (expression_statement
-    (binary_expression 
-      left: (float)    
-      right: (float))) 
-  (expression_statement
-    (binary_expression 
-      left: (float)
-      right: (float)))
-  (expression_statement
-    (binary_expression
-      left: (float)
-      right: (float))))
+  (binary_expression
+    left: (float)
+    right: (float))
+  (binary_expression
+    left: (float)
+    right: (float))
+  (binary_expression
+    left: (float)
+    right: (float))
+  (binary_expression
+    left: (float)
+    right: (float)))
 
 =========
 Comparison
@@ -67,14 +61,13 @@ Comparison
 ---------
 
 (source_file
-  (expression_statement
-    (comparison_operator
-      (integer)
-      (integer)
-      (integer)
-      (integer)
-      (integer)
-      (integer))))
+  (comparison_operator
+    (integer)
+    (integer)
+    (integer)
+    (integer)
+    (integer)
+    (integer)))
 
 =========
 Assignments
@@ -87,20 +80,17 @@ b = c;
 ---------
 
 (source_file
-  (expression_statement 
-    (assignment
-      left: (identifier)
-      right: (integer)))
-  (expression_statement 
-    (assignment
-      left: (identifier)
-      right: (identifier)))
-  (expression_statement
-    (assignment
-      left: (matrix_pattern
-        (identifier)
-        (identifier))
-      right: (identifier))))
+  (assignment
+    left: (identifier)
+    right: (integer))
+  (assignment
+    left: (identifier)
+    right: (identifier))
+  (assignment
+    left: (matrix_pattern
+      (identifier)
+      (identifier))
+    right: (identifier)))
 
 =========
 Augmented assignments
@@ -113,16 +103,13 @@ b++
 ---------
 
 (source_file
-  (expression_statement
-    (augmented_assignment
-      left: (identifier)
-      right: (integer)))
-  (expression_statement
-    (update_expression
-      argument: (identifier)))
-  (expression_statement
-    (update_expression
-      argument: (identifier))))
+  (augmented_assignment
+    left: (identifier)
+    right: (integer))
+  (update_expression
+    argument: (identifier))
+  (update_expression
+    argument: (identifier)))
 
 =========
 Member expression
@@ -133,15 +120,13 @@ a.b.c = 1
 ---------
 
 (source_file
-  (expression_statement
-    (assignment
-      left: (member_expression
-        element: (member_expression
-          element: (identifier)
-          field: (identifier))
+  (assignment
+    left: (member_expression
+      element: (member_expression
+        element: (identifier)
         field: (identifier))
-      right: (integer))))
-
+      field: (identifier))
+    right: (integer)))
 
 =========
 Matrix expression
@@ -152,14 +137,13 @@ Matrix expression
 ---------
 
 (source_file
-  (expression_statement
-    (matrix
-      (integer)
-      (integer)
-      (integer)
-      (integer)
-      (integer)
-      (integer))))
+  (matrix
+    (integer)
+    (integer)
+    (integer)
+    (integer)
+    (integer)
+    (integer)))
 
 =========
 Cell expression
@@ -170,9 +154,8 @@ Cell expression
 ---------
 
 (source_file
-  (expression_statement
-    (cell
-      (char)
-      (integer)
-      (integer)
-      (integer))))
+  (cell
+    (char)
+    (integer)
+    (integer)
+    (integer)))

@@ -22,13 +22,7 @@ module.exports = grammar({
 
   extras: ($) => [$.comment, /\s/],
 
-  supertypes: ($) => [
-    $.declaration,
-    $._compound_statement,
-    $.expression,
-    $.primary_expression,
-    $.pattern,
-  ],
+  supertypes: ($) => [$.expression, $.primary_expression, $.pattern],
 
   word: ($) => $.identifier,
 
@@ -41,14 +35,20 @@ module.exports = grammar({
   inline: ($) => [$._left_hand_side],
 
   rules: {
-    source_file: ($) => repeat($._statement),
+    source_file: ($) => optional($._expression_list),
+
+    _expression_list: ($) =>
+      seq(
+        sep1($._terminator, choice($.expression, $._declaration, $._statement)),
+        optional($._terminator)
+      ),
+
+    _terminator: ($) => choice(",", ";", "\n"),
 
     //
     // declarations
     //
-    declaration: ($) => choice($.function_declaration, $.global_declaration),
-
-    global_declaration: ($) => seq("global", prec.left(repeat1($.identifier))),
+    _declaration: ($) => choice($.function_declaration),
 
     function_declaration: ($) =>
       seq(
@@ -56,7 +56,7 @@ module.exports = grammar({
         optional(seq($.function_return, "=")),
         field("name", $.identifier),
         field("parameters", optional($.parameters)),
-        field("body", optional($.block)),
+        optional($._expression_list),
         choice("end", "endfunction")
       ),
 
@@ -72,39 +72,36 @@ module.exports = grammar({
         seq("(", optional(seq(commaSep1($.identifier), optional(","))), ")")
       ),
 
-    block: ($) => prec.left(repeat1($._statement)),
-
     //
     // statements
     //
 
     _statement: ($) =>
-      choice($.declaration, $._simple_statements, $._compound_statement),
-
-    _simple_statements: ($) =>
-      seq(
-        seq($._simple_statement, repeat(seq(";", $._simple_statement))),
-        optional(";"),
-        "\n"
+      choice(
+        $.break_statement,
+        $.continue_statement,
+        $.return_statement,
+        $.if_statement,
+        $.switch_statement,
+        $.for_statement,
+        $.while_statement,
+        $.do_statement,
+        $.try_statement,
+        $.assignment,
+        $.augmented_assignment
       ),
 
-    _simple_statement: ($) =>
-      choice($.expression_statement, $.return_statement),
-
-    expression_statement: ($) =>
-      choice($.expression, $.assignment, $.augmented_assignment),
-
+    break_statement: ($) => "break",
+    continue_statement: ($) => "continue",
     return_statement: ($) => "return",
-
-    _compound_statement: ($) => choice($.if_statement),
 
     if_statement: ($) =>
       seq(
         "if",
         field("condition", $.expression),
-        optional(field("consequence", $._statement)),
-        repeat(field("alternative", $.elseif_clause)),
-        optional(field("alternative", $.else_clause)),
+        optional($._expression_list),
+        field("alternative", repeat($.elseif_clause)),
+        field("alternative", optional($.else_clause)),
         choice("end", "endif")
       ),
 
@@ -112,11 +109,69 @@ module.exports = grammar({
       seq(
         "elseif",
         field("condition", $.expression),
-        optional(field("consequence", $._statement))
+        optional($._expression_list)
       ),
 
-    else_clause: ($) =>
-      seq("else", optional(field("consequence", $._statement))),
+    else_clause: ($) => seq("else", optional($._expression_list)),
+
+    switch_statement: ($) =>
+      seq("switch", field("value", $.expression), field("body", $.switch_body)),
+
+    switch_body: ($) =>
+      seq(
+        repeat($.switch_case),
+        optional($.switch_otherwise),
+        choice("end", "endswitch")
+      ),
+
+    switch_case: ($) =>
+      seq("case", field("value", $.expression), optional($._expression_list)),
+
+    switch_otherwise: ($) => seq("otherwise", optional($._expression_list)),
+
+    for_statement: ($) =>
+      seq(
+        "for",
+        field("value", choice($.identifier, $.matrix_pattern)),
+        "=",
+        $.expression,
+        optional($._expression_list),
+        choice("end", "endfor")
+      ),
+
+    while_statement: ($) =>
+      seq(
+        "while",
+        field("condition", $.expression),
+        optional($._expression_list),
+        choice("end", "endwhile")
+      ),
+
+    do_statement: ($) =>
+      seq(
+        "do",
+        optional($._expression_list),
+        "until",
+        field("condition", $.expression)
+      ),
+
+    try_statement: ($) =>
+      seq(
+        "try",
+        optional($._expression_list),
+        $.catch_clause,
+        choice("end", "end_try_catch")
+      ),
+
+    catch_clause: ($) =>
+      prec(
+        1,
+        seq(
+          "catch",
+          field("exception", optional($.identifier)),
+          optional($._expression_list)
+        )
+      ),
 
     argument_list: ($) => seq("(", optional(commaSep1($.expression)), ")"),
 
