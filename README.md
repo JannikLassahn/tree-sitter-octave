@@ -6,7 +6,6 @@ Octave grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter).
 
 TODOs:
 
-- [ ] classdef
 - [ ] block comments
 - [ ] line continuation operator (...)
 - [ ] index/range expression (x{} and i:j:k)

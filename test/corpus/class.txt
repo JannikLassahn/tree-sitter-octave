@@ -1,0 +1,142 @@
+=========
+Class
+=========
+
+classdef myclass < handle
+  properties
+    a
+  endproperties
+
+  properties(Access = public, Constant = true)
+    b = 1;
+  endproperties
+
+  properties(GetAccess = protected, SetAccess = private)
+    c
+  endproperties
+
+  methods
+    function this = myclass (param)
+    endfunction
+  endmethods
+
+  methods (Access = private)
+    function fun (this)
+      this.c
+    endfunction
+  endmethods
+
+  events
+    ev
+  endevents
+
+endclassdef
+
+---------
+
+(source_file
+  (class_definition
+    name: (identifier)
+    base: (identifier)
+    (properties_block
+      (property
+        name: (identifier)))
+    (properties_block
+      (attributes
+        (attribute
+          name: (identifier)
+          value: (identifier))
+        (attribute
+          name: (identifier)
+          value: (true)))
+      (property
+        name: (identifier)
+        value: (integer)))
+    (properties_block
+      (attributes
+        (attribute
+          name: (identifier)
+          value: (identifier))
+        (attribute
+          name: (identifier)
+          value: (identifier)))
+      (property
+        name: (identifier)))
+    (methods_block
+      (function_declaration
+        (function_return
+          (identifier))
+        name: (identifier)
+        parameters: (parameters
+          (identifier))))
+    (methods_block
+      (attributes
+        (attribute
+          name: (identifier)
+          value: (identifier)))
+      (function_declaration
+        name: (identifier)
+        parameters: (parameters
+          (identifier))
+        (member_expression
+          element: (identifier)
+          field: (identifier))))
+    (events_block
+      (identifier))))
+
+=========
+Class attributes 
+=========
+
+classdef (Sealed = true, Hidden = true) myclass
+end
+
+---------
+
+(source_file
+  (class_definition
+    (attributes
+      (attribute
+        name: (identifier)
+        value: (true))
+      (attribute
+        name: (identifier)
+        value: (true)))
+    name: (identifier)))
+
+=========
+Enumeration
+=========
+
+classdef Bearing < uint32
+   enumeration
+      North (0)
+      East  (90)
+      South (180)
+      West  (270)
+   end
+end
+
+---------
+
+(source_file
+  (class_definition
+    name: (identifier)
+    base: (identifier)
+    (enumeration_block
+      (enumeration
+        (identifier)
+        (argument_list
+          (integer)))
+      (enumeration
+        (identifier)
+        (argument_list
+          (integer)))
+      (enumeration
+        (identifier)
+        (argument_list
+          (integer)))
+      (enumeration
+        (identifier)
+        (argument_list
+          (integer))))))

@@ -35,7 +35,8 @@ module.exports = grammar({
   inline: ($) => [$._left_hand_side],
 
   rules: {
-    source_file: ($) => optional($._expression_list),
+    source_file: ($) =>
+      optional(choice($._expression_list, $.class_definition)),
 
     _expression_list: ($) =>
       seq(
@@ -70,6 +71,78 @@ module.exports = grammar({
       prec.left(
         100,
         seq("(", optional(seq(commaSep1($.identifier), optional(","))), ")")
+      ),
+
+    class_definition: ($) =>
+      seq(
+        "classdef",
+        optional($.attributes),
+        field("name", $.identifier),
+        optional(seq("<", sep1("&", field("base", $.identifier)))),
+        repeat(
+          choice(
+            $.properties_block,
+            $.methods_block,
+            $.events_block,
+            $.enumeration_block
+          )
+        ),
+        choice("end", "endclassdef")
+      ),
+
+    properties_block: ($) =>
+      seq(
+        "properties",
+        optional($.attributes),
+        repeat($.property),
+        choice("end", "endproperties")
+      ),
+
+    property: ($) =>
+      seq(
+        field("name", $.identifier),
+        optional(seq("=", field("value", $.expression))),
+        optional($._terminator)
+      ),
+
+    methods_block: ($) =>
+      seq(
+        "methods",
+        optional($.attributes),
+        repeat($.function_declaration),
+        choice("end", "endmethods")
+      ),
+
+    events_block: ($) =>
+      seq(
+        "events",
+        optional($.attributes),
+        optional(
+          seq(sep1($._terminator, $.identifier), optional($._terminator))
+        ),
+        choice("end", "endevents")
+      ),
+
+    enumeration_block: ($) =>
+      seq(
+        "enumeration",
+        optional($.attributes),
+        optional(
+          seq(sep1($._terminator, $.enumeration), optional($._terminator))
+        ),
+        choice("end", "endenumeration")
+      ),
+
+    enumeration: ($) => seq($.identifier, optional($.argument_list)),
+
+    attributes: ($) => seq("(", commaSep1($.attribute), ")"),
+
+    attribute: ($) =>
+      seq(
+        field("name", $.identifier),
+        optional(
+          seq("=", field("value", choice($.identifier, $.true, $.false)))
+        )
       ),
 
     //
