@@ -28,7 +28,7 @@ module.exports = grammar({
 
   conflicts: ($) => [
     [$.primary_expression, $.pattern],
-    [$.primary_expression, $.matrix_pattern],
+    [$.primary_expression, $._list],
     [$.matrix, $.matrix_pattern],
   ],
 
@@ -67,11 +67,7 @@ module.exports = grammar({
         seq("[", seq(commaSep1($.identifier), optional(",")), "]")
       ),
 
-    parameters: ($) =>
-      prec.left(
-        100,
-        seq("(", optional(seq(commaSep1($.identifier), optional(","))), ")")
-      ),
+    parameters: ($) => prec.left(100, seq("(", optional($._list), ")")),
 
     class_definition: ($) =>
       seq(
@@ -247,15 +243,31 @@ module.exports = grammar({
 
     argument_list: ($) => seq("(", optional(commaSep1($.expression)), ")"),
 
+    arg_list: ($) =>
+      seq(
+        "(",
+        optional(commaSep1(choice($.identifier, $.tilde, $.colon))),
+        ")"
+      ),
+
+    anonymous_function: ($) => seq("@", $.argument_list, $.expression),
+
     //
     // expressions
     //
     expression: ($) =>
-      choice($.binary_expression, $.unary_expression, $.primary_expression),
+      choice(
+        $.binary_expression,
+        $.unary_expression,
+        $.primary_expression,
+        $.anonymous_function
+        // $.range_expression,
+      ),
 
     primary_expression: ($) =>
       choice(
         $.identifier,
+        $.function_handle,
         $._literal,
         $.matrix,
         $.cell,
@@ -326,7 +338,9 @@ module.exports = grammar({
     _right_hand_side: ($) => choice($.expression),
 
     pattern: ($) => choice($.identifier, $.matrix_pattern, $.member_expression),
-    matrix_pattern: ($) => seq("[", commaSep1($.identifier), "]"),
+    matrix_pattern: ($) => seq("[", $._list, "]"),
+
+    _list: ($) => commaSep1(choice($.identifier, $.tilde)),
 
     call_expression: ($) =>
       prec(
@@ -425,6 +439,11 @@ module.exports = grammar({
         )
       );
     },
+
+    function_handle: ($) => seq("@", $.identifier),
+
+    colon: ($) => ":",
+    tilde: ($) => "~",
 
     identifier: ($) => /[a-zA-Z]+[a-zA-Z0-9_]*/,
 
