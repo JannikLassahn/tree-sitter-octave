@@ -86,24 +86,27 @@ Comparison
 Assignments
 =========
 
-a = 1
+a = b = c;
 b += c;
-[a,b] = c;
+[~,b] = c;
 
 ---------
 
 (source_file
-  (assignment
+  (assignment_expression
     left: (identifier)
     (operator)
-    right: (integer))
-  (assignment
+    right: (assignment_expression
+      left: (identifier)
+      (operator)
+      right: (identifier)))      
+  (assignment_expression
     left: (identifier)
     (operator)
     right: (identifier))
-  (assignment
+  (assignment_expression
     left: (matrix_pattern
-      (identifier)
+      (tilde)
       (identifier))
     (operator)
     right: (identifier)))
@@ -136,6 +139,30 @@ a'
     (identifier)))
 
 =========
+Binary/unary precedence
+=========
+
+
+a' .^ b
+-a ^ b
+
+---------
+
+(source_file
+  (binary_expression
+    left: (unary_expression
+      (identifier)
+      (operator))
+    (operator)
+    right: (identifier))
+  (unary_expression
+    (operator)
+    (binary_expression
+      left: (identifier)
+      (operator)
+      right: (identifier))))
+
+=========
 Member expression
 =========
 
@@ -144,7 +171,7 @@ a.b.c = 1
 ---------
 
 (source_file
-  (assignment
+  (assignment_expression
     left: (member_expression
       element: (member_expression
         element: (identifier)
@@ -158,6 +185,7 @@ Matrix expression
 =========
 
 [1 3 3; 4 5 6]
+['123' "456"]
 
 ---------
 
@@ -168,7 +196,10 @@ Matrix expression
     (integer)
     (integer)
     (integer)
-    (integer)))
+    (integer))
+  (matrix
+    (char)
+    (string)))
 
 =========
 Cell expression
@@ -184,3 +215,76 @@ Cell expression
     (integer)
     (integer)
     (integer)))
+
+=========
+Function handle
+=========
+
+h = @fun
+
+---------
+
+(source_file
+  (assignment_expression
+    left: (identifier)
+    (operator)
+    right: (function_handle
+      (identifier))))
+
+=========
+Anonymous function
+=========
+
+h = @(x) sin(1./x);
+
+---------
+
+(source_file
+  (assignment_expression
+    left: (identifier)
+    (operator)
+    right: (anonymous_function
+      (argument_list
+        (identifier))
+      (call_expression
+        function: (identifier)
+        arguments: (argument_list
+          (binary_expression
+            left: (float)
+            (operator)
+            right: (identifier)))))))
+
+=========
+Colon expression
+=========
+
+A(1:2:end)
+
+---------
+
+(source_file
+  (call_expression
+    function: (identifier)
+    arguments: (argument_list
+      (colon_expression
+        (integer)
+        (integer)
+        (identifier)))))
+
+=========
+Index expression
+=========
+
+A{3,4,2} = [];
+
+---------
+
+(source_file
+  (assignment_expression
+    left: (index_expression
+      (identifier)
+      (integer)
+      (integer)
+      (integer))
+    (operator)
+    right: (matrix)))

@@ -1,6 +1,6 @@
 // from https://docs.octave.org/v7.2.0/Operator-Precedence.html
 const PREC = {
-  assign: 0,
+  assign: 1,
   or: 1,
   and: 2,
   elementwise_or: 3,
@@ -30,9 +30,10 @@ module.exports = grammar({
     [$.primary_expression, $.pattern],
     [$.primary_expression, $._list],
     [$.matrix, $.matrix_pattern],
+    [$.cell, $.index_expression],
   ],
 
-  inline: ($) => [$._left_hand_side],
+  inline: ($) => [$._left_hand_side, $._simple_expression],
 
   rules: {
     source_file: ($) =>
@@ -155,8 +156,7 @@ module.exports = grammar({
         $.for_statement,
         $.while_statement,
         $.do_statement,
-        $.try_statement,
-        $.assignment
+        $.try_statement
       ),
 
     break_statement: ($) => "break",
@@ -241,7 +241,8 @@ module.exports = grammar({
         )
       ),
 
-    argument_list: ($) => seq("(", optional(commaSep1($.expression)), ")"),
+    argument_list: ($) =>
+      seq("(", optional(commaSep1(choice($.expression, $.colon))), ")"),
 
     arg_list: ($) =>
       seq(
@@ -250,18 +251,32 @@ module.exports = grammar({
         ")"
       ),
 
-    anonymous_function: ($) => seq("@", $.argument_list, $.expression),
-
     //
     // expressions
     //
     expression: ($) =>
       choice(
+        $._simple_expression,
+        $.assignment_expression,
+        $.anonymous_function
+      ),
+
+    anonymous_function: ($) => seq("@", $.argument_list, $.expression),
+
+    _simple_expression: ($) =>
+      choice(
+        $._op_expression,
+        $.colon_expression,
+        $.member_expression,
+        $.index_expression
+      ),
+
+    _op_expression: ($) =>
+      choice(
+        $.primary_expression,
         $.binary_expression,
         $.unary_expression,
-        $.primary_expression,
-        $.anonymous_function
-        // $.range_expression,
+        $.call_expression
       ),
 
     primary_expression: ($) =>
@@ -271,10 +286,7 @@ module.exports = grammar({
         $._literal,
         $.matrix,
         $.cell,
-        $.call_expression,
-        $.parenthesized_expression,
-        $.elementaccess_expression,
-        $.member_expression
+        $.parenthesized_expression
       ),
 
     operator: ($) =>
@@ -287,11 +299,34 @@ module.exports = grammar({
         $._times_operator
       ),
 
+    colon_expression: ($) =>
+      prec.left(
+        PREC.colon,
+        seq(
+          $._op_expression,
+          ":",
+          $._op_expression,
+          prec.left(optional(seq(":", $._op_expression)))
+        )
+      ),
+
+    index_expression: ($) =>
+      prec(
+        PREC.call,
+        seq(
+          $.identifier,
+          "{",
+          optional(commaSep1(choice($.expression, $.colon))),
+          "}"
+        )
+      ),
+
     binary_expression: ($) => {
       const table = [
-        [prec.left, $._comparison_operator, PREC.compare],
         [prec.left, $._times_operator, PREC.times],
         [prec.left, $._plus_operator, PREC.plus],
+        [prec.left, $._pow_operator, PREC.power],
+        [prec.left, $._comparison_operator, PREC.compare],
         [prec.left, "&", PREC.elementwise_or],
         [prec.left, "|", PREC.elementwise_and],
         [prec.left, "&&", PREC.and],
@@ -314,28 +349,32 @@ module.exports = grammar({
 
     unary_expression: ($) =>
       choice(
-        prec(
+        prec.left(
           PREC.prefix,
           seq(alias($._prefix_operator, $.operator), $.expression)
         ),
-        prec(
+        prec.right(
           PREC.postfix,
           seq($.expression, alias($._postfix_operator, $.operator))
+        ),
+        prec.left(
+          PREC.transpose,
+          seq($.expression, alias(token.immediate("'"), $.operator))
         )
       ),
 
-    assignment: ($) =>
+    assignment_expression: ($) =>
       prec.right(
         PREC.assign,
         seq(
           field("left", $._left_hand_side),
           alias($._assign_operator, $.operator),
-          field("right", $._right_hand_side)
+          field("right", $.expression)
         )
       ),
 
-    _left_hand_side: ($) => choice($.pattern),
-    _right_hand_side: ($) => choice($.expression),
+    _left_hand_side: ($) =>
+      choice($.pattern, $.member_expression, $.index_expression),
 
     pattern: ($) => choice($.identifier, $.matrix_pattern, $.member_expression),
     matrix_pattern: ($) => seq("[", $._list, "]"),
@@ -346,7 +385,7 @@ module.exports = grammar({
       prec(
         PREC.call,
         seq(
-          field("function", $.primary_expression),
+          field("function", $.expression),
           field("arguments", $.argument_list)
         )
       ),
@@ -354,24 +393,13 @@ module.exports = grammar({
     parenthesized_expression: ($) =>
       prec(PREC.parentheses, seq("(", $.expression, ")")),
 
-    elementaccess_expression: ($) =>
-      prec.left(
-        PREC.parentheses,
-        seq(
-          field("element", $.primary_expression),
-          "{",
-          field("index", $.expression),
-          "}"
-        )
-      ),
-
     member_expression: ($) =>
-      prec(
+      prec.left(
         PREC.call,
         seq(
-          field("element", $.primary_expression),
+          field("element", $.expression),
           ".",
-          field("field", $.identifier)
+          field("field", choice($.member_expression, $.primary_expression))
         )
       ),
 
@@ -415,7 +443,7 @@ module.exports = grammar({
           repeat(
             choice(
               token.immediate(prec(1, /[^'\n]+/)),
-              alias(token(prec(1, /''/)), $.escape_sequence)
+              alias(token(prec(1, "''")), $.escape_sequence)
             )
           ),
           "'"
@@ -473,10 +501,11 @@ module.exports = grammar({
 
     _plus_operator: ($) => token(choice("+", "-")),
 
-    _postfix_operator: ($) => token(choice("++", "--", "'")),
+    _postfix_operator: ($) => token(choice("++", "--")),
     _prefix_operator: ($) => token(choice("+", "-", "~", "!")),
 
     _times_operator: ($) => token(seq(optional("."), choice("*", "/", "\\"))),
+    _pow_operator: ($) => token(choice(".^", "^")),
   },
 });
 

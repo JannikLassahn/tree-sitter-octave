@@ -48,7 +48,7 @@ Char arrays
     (escape_sequence)))
 
 =========
-Char arrays
+String arrays
 =========
 
 "hello"

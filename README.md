@@ -8,6 +8,5 @@ TODOs:
 
 - [ ] block comments
 - [ ] line continuation operator (...)
-- [ ] index/range expression (x{} and i:j:k)
 - [ ] advanced numeric types (binary notation, complex)
 - [ ] persistent and global variables
