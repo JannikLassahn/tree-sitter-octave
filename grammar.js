@@ -50,7 +50,16 @@ module.exports = grammar({
     //
     // declarations
     //
-    _declaration: ($) => choice($.function_declaration),
+    _declaration: ($) =>
+      choice(
+        $.function_declaration,
+        $.persistent_declaration,
+        $.global_declaration
+      ),
+
+    persistent_declaration: ($) => seq("persistent", repeat1($.identifier)),
+
+    global_declaration: ($) => seq("global", repeat1($.identifier)),
 
     function_declaration: ($) =>
       seq(
@@ -473,7 +482,7 @@ module.exports = grammar({
     colon: ($) => ":",
     tilde: ($) => "~",
 
-    identifier: ($) => /[a-zA-Z]+[a-zA-Z0-9_]*/,
+    identifier: ($) => /[a-zA-Z_]+[a-zA-Z0-9_]*/,
 
     comment: ($) => seq(/%|#/, /.*/),
 

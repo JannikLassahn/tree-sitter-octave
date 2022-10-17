@@ -9,4 +9,3 @@ TODOs:
 - [ ] block comments
 - [ ] line continuation operator (...)
 - [ ] advanced numeric types (binary notation, complex)
-- [ ] persistent and global variables

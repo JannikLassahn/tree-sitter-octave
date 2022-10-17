@@ -342,7 +342,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -527,7 +535,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -582,7 +598,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -648,7 +672,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -775,7 +807,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -855,7 +895,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -894,6 +942,21 @@
   },
   {
     "type": "function_return",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "global_declaration",
     "named": true,
     "fields": {},
     "children": {
@@ -965,7 +1028,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -1128,6 +1199,21 @@
     }
   },
   {
+    "type": "persistent_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "properties_block",
     "named": true,
     "fields": {},
@@ -1209,7 +1295,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -1309,7 +1403,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -1364,7 +1466,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -1449,7 +1559,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -1534,7 +1652,15 @@
           "named": true
         },
         {
+          "type": "global_declaration",
+          "named": true
+        },
+        {
           "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "persistent_declaration",
           "named": true
         },
         {
@@ -1725,6 +1851,10 @@
     "named": false
   },
   {
+    "type": "global",
+    "named": false
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -1746,6 +1876,10 @@
   },
   {
     "type": "otherwise",
+    "named": false
+  },
+  {
+    "type": "persistent",
     "named": false
   },
   {

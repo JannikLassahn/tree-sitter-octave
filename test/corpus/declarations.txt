@@ -1,0 +1,70 @@
+=========
+Function declarations
+=========
+
+function foo
+end
+
+function foo(a, b)
+end
+
+function res = foo()
+    res = 1;
+endfunction
+
+function foo(h, ~)
+endfunction
+
+---------
+
+(source_file 
+  (function_declaration 
+    name: (identifier ))
+  (function_declaration 
+    name: (identifier )
+    parameters: (parameters 
+      (identifier )
+      (identifier )))
+  (function_declaration 
+    (function_return 
+      (identifier ))
+    name: (identifier )
+    parameters: (parameters )
+    (assignment_expression 
+      left: (identifier )
+      (operator )
+      right: (integer )))
+  (function_declaration 
+    name: (identifier )
+    parameters: (parameters 
+      (identifier )
+      (tilde ))))
+
+=========
+Global declaration
+=========
+
+global x y
+
+---------
+
+(source_file
+  (global_declaration
+    (identifier)
+    (identifier)))
+
+=========
+Persistent declaration
+=========
+
+function foo
+    persistent x
+end
+
+---------
+
+(source_file
+  (function_declaration
+    name: (identifier)
+    (persistent_declaration
+      (identifier))))
